@@ -1,0 +1,23 @@
+{
+  "name": "cx",
+  "version": "1.0.0",
+  "description": "Token Coin X (CX)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coinx99/CX.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/coinx99/CX/issues"
+  },
+  "homepage": "https://github.com/coinx99/CX#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "hardhat": "^2.14.0"
+  }
+}

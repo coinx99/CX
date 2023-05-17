@@ -1,7 +1,7 @@
 {
   "name": "cx",
   "version": "1.0.0",
-  "description": "Token Coin X (CX)",
+  "description": "Token",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,6 +18,13 @@
   "homepage": "https://github.com/coinx99/CX#readme",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@openzeppelin/hardhat-upgrades": "^1.25.3",
+    "chai": "^4.3.7",
+    "ethers": "^5.7.2",
     "hardhat": "^2.14.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts-upgradeable": "^4.8.3"
   }
 }

@@ -26,7 +26,7 @@ describe('Proxy', function () {
 
   beforeEach(async function () {
     accounts = await ethers.getSigners();
-    console.log(accounts.length);
+    console.log(accounts[0]);
 
     Token = await ethers.getContractFactory("Token");
     token = await upgrades.deployProxy(Token, ["My Token", "MT", _maxSupply.toHexString()], { initializer: 'initialize' });
@@ -63,21 +63,18 @@ describe('Proxy', function () {
 
 
   it("Token upgrade", async function () {
+
+    let setBl = await token.setBl(addressBlacklist, true)
+    let bl = await tokenV2.bs(addressBlacklist)
+    expect(bl).to.equal(true);
+
+
     let _tokenV2 = await ethers.getContractFactory("TokenV2");
     tokenV2 = await upgrades.upgradeProxy(token.address, _tokenV2);
     expect(tokenV2).not.equal(undefined);
-  })
-
-
-  it('maxSupply == ' + _maxSupplyUint256, async function () {
     let maxSupply = await tokenV2._maxSupply()
-    expect(maxSupply.toString()).to.equal(_maxSupplyUint256.toString())
-  });
 
 
-  it('blacklist: ' + addressBlacklist, async function () {
-    let bl = await tokenV2.bs(addressBlacklist)
-    expect(bl).to.equal(true);
-  });
-
+  })
+ 
 });

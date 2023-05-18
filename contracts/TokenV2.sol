@@ -8,7 +8,7 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-contract Token is
+contract TokenV2 is
     Initializable,
     ERC20Upgradeable,
     ERC20BurnableUpgradeable,
@@ -51,10 +51,10 @@ contract Token is
     }
 
     function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
-        // require(
-        //     totalSupply() + amount <= _maxSupply,
-        //     "ERC20: mint amount exceeds max supply"
-        // );
+        require(
+            totalSupply() + amount <= _maxSupply,
+            "ERC20: mint amount exceeds max supply"
+        );
         _mint(to, amount);
     }
 

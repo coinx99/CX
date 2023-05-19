@@ -1,32 +1,39 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
+require("@nomicfoundation/hardhat-verify");
 const hre = require("hardhat");
 
+const { BigNumber } = require('ethers');
+const { ethers, upgrades } = require("hardhat");
+
+console.log(hre);
+
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  let Token;
+  let token;
+  let tokenV2;
 
-  const lockedAmount = hre.ethers.utils.parseEther("0.001");
+  let accounts
+  const provider = ethers.provider;
 
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  let _maxSupply = BigNumber.from(1000).mul(BigNumber.from(10).pow(9))
+  let _decimals = 18
+  let _decimalsMul = BigNumber.from(10).pow(_decimals)
+  let _maxSupplyUint256 = _maxSupply.mul(_decimalsMul)
+  let _totalSupplyUint256 = _maxSupplyUint256 //.mul(2).div(100)  // 2%
+  accounts = await ethers.getSigners();
+  console.log("accounts[0]", accounts[0].address);
+  console.log((await provider.getBalance(accounts[0].address)) / 1e18)
+  console.log((await provider.getBalance(accounts[1].address)) / 1e18)
+  console.log((await provider.getBalance(accounts[2].address)) / 1e18)
 
-  await lock.deployed();
 
-  console.log(
-    `Lock with ${ethers.utils.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  );
+  Token = await ethers.getContractFactory("Token");
+  token = await upgrades.deployProxy(Token, ["My Token", "MT", _maxSupply.toHexString()], { initializer: 'initialize' });
+
+
+  await token.deployed();
+  console.log("token deployed to:", token.address);
+
+
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+// main();
